@@ -1,0 +1,32 @@
+# Copyright 2015 Google Inc. All Rights Reserved.
+imports:
+    - { resource: config.yml }
+
+#framework:
+#    validation:
+#        cache: apc
+
+doctrine:
+    dbal:
+        driver: pdo_mysql
+        host: null
+        port: null
+        dbname: <your-database>
+        user: root
+        password: null
+        unix_socket: /cloudsql/<your-project-id>:<your-instance-name>
+        charset:  UTF8
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+        metadata_cache_driver: apc
+        result_cache_driver: apc
+        query_cache_driver: apc
+
+
+# Force monolog to use syslog
+monolog:
+    handlers:
+        syslog:
+            type: syslog
+            level: debug

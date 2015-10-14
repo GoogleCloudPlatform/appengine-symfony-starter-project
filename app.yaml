@@ -1,0 +1,31 @@
+# Copyright 2015 Google Inc. All Rights Reserved.
+# application: betterbrent-php-client-tests
+# version: 1
+runtime: php55
+api_version: 1
+threadsafe: true
+
+handlers:
+# tell appengine where our static assets live
+- url: /bundles
+  static_dir: web/bundles
+
+- url: /robots.txt
+  static_files: web/robots.txt
+  upload: web/robots.txt
+
+- url: /favicon.ico
+  static_files: web/favicon.ico
+  upload: web/favicon.ico
+
+# a script to clear our cache
+- url: /clear_cache
+  script: web/clear_cache.php
+  login: admin
+
+# the symfony front controller
+- url: /.*
+  script: web/app.php
+
+env_variables:
+  GCS_BUCKET_NAME: "GCS_BUCKET_NAME"
