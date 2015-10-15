@@ -1,6 +1,4 @@
 # Copyright 2015 Google Inc. All Rights Reserved.
-# application: betterbrent-php-client-tests
-# version: 1
 runtime: php55
 api_version: 1
 threadsafe: true
@@ -29,3 +27,6 @@ handlers:
 
 env_variables:
   GCS_BUCKET_NAME: "GCS_BUCKET_NAME"
+
+skip_files:
+  - (.*/)?Tests\/Fixtures\/(.*)
