@@ -1,5 +1,5 @@
 {
-    "name": "google/symfony-helloworld",
+    "name": "google/symfony-starter-project",
     "license": "MIT",
     "type": "project",
     "description": "A Symfony hello world for App Engine",

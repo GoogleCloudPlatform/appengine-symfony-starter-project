@@ -26,7 +26,7 @@ handlers:
   script: web/app.php
 
 env_variables:
-  GCS_BUCKET_NAME: "GCS_BUCKET_NAME"
+  GCS_BUCKET_NAME: "YOUR_GCS_BUCKET_NAME"
 
 skip_files:
   - (.*/)?Tests\/Fixtures\/(.*)

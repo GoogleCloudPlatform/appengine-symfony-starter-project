@@ -71,7 +71,7 @@ final class Environment
     public static function checkBucketName()
     {
         $bucketNameFromEnv = getenv('GCS_BUCKET_NAME');
-        if (empty($bucketNameFromEnv) || $bucketNameFromEnv == 'GCS_BUCKET_NAME') {
+        if (empty($bucketNameFromEnv) || $bucketNameFromEnv == 'YOUR_GCS_BUCKET_NAME') {
             throw new \Exception(
                 'You must set the environment variable "GCS_BUCKET_NAME" when using App Engine.'
                 . ' This can be done using "environment_variables" in app.yaml'
@@ -79,7 +79,7 @@ final class Environment
         }
 
         $bucketNameFromIni = ini_get('google_app_engine.allow_include_gs_buckets');
-        if (empty($bucketNameFromIni) || $bucketNameFromIni == 'GCS_BUCKET_NAME') {
+        if (empty($bucketNameFromIni) || $bucketNameFromIni == 'YOUR_GCS_BUCKET_NAME') {
             throw new \Exception(
                 'You must set "google_app_engine.allow_include_gs_buckets" to your GCS bucket'
                 . ' name in php.ini'

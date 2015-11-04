@@ -53,7 +53,7 @@ class AppKernel extends Kernel
     public function getCacheDir()
     {
         if ($this->gcsBucketName) {
-            return sprintf('gs://%s/symfony/cache', $this->gcsBucketName);
+            return sprintf('gs://%s%s/symfony/cache', $this->gcsBucketName, $this->getVersionPrefix());
         }
 
         return parent::getCacheDir();
@@ -95,5 +95,21 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+    }
+
+    private function getVersionPrefix()
+    {
+        if (!$this->debug) {
+            return;
+        }
+
+        $version = getenv('CURRENT_VERSION_ID');
+
+        // CURRENT_VERSION_ID in PHP represents major and minor version
+        if (1 === substr_count($version, '.')) {
+            list($major, $minor) = explode('.', $version);
+
+            return $major . '/';
+        }
     }
 }
