@@ -30,3 +30,4 @@ env_variables:
 
 skip_files:
   - (.*/)?Tests\/Fixtures\/(.*)
+  - ^app\/cache\/(.*)
