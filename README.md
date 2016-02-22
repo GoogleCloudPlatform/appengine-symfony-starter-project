@@ -10,7 +10,7 @@ composer installed.
 Once composer is installed, execute the following command to create this project:
 
 ```sh
-composer create-project google/appengine-symfony-starter-project
+composer create-project google/appengine-symfony-starter-project:@dev
 ```
 
 ## Set Up
@@ -26,7 +26,7 @@ To run the starter app, complete the following steps:
 Deploy to your AppEngine instance:
 
 ```sh
-gcloud preview app deploy app.yaml --promote
+gcloud preview app deploy
 ```
 
 You can also run this locally using the app-engine
