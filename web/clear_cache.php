@@ -24,7 +24,6 @@ require_once __DIR__.'/../app/AppKernel.php';
 Environment::doAppEngineCheck();
 
 $kernel = new AppKernel();
-$kernel->boot();
 
 Environment::clearCache($kernel->getCacheDir());
 
