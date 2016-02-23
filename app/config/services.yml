@@ -4,6 +4,11 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    memcache:
+        class: Memcache
+        arguments:
+    session.handler.memcache:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler
+        arguments:
+          - "@memcache"
+          - { prefix: foo, expiretime: ~ }

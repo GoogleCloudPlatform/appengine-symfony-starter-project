@@ -29,11 +29,11 @@ class AppKernel extends Kernel
         // determine the environment / debug configuration based on whether or not this is running
         // in App Engine's Dev App Server, or in production
         if (is_null($debug)) {
-            $debug = Environment::onDevAppServer();
+            $debug = !Environment::onAppEngine();
         }
 
         if (is_null($environment)) {
-            $environment = $debug ? 'prod' : 'dev';
+            $environment = $debug ? 'dev' : 'prod';
         }
 
         parent::__construct($environment, $debug);
@@ -53,7 +53,7 @@ class AppKernel extends Kernel
     public function getCacheDir()
     {
         if ($this->gcsBucketName) {
-            return sprintf('gs://%s%s/symfony/cache', $this->gcsBucketName, $this->getVersionPrefix());
+            return sprintf('gs://%s/symfony/cache%s', $this->gcsBucketName, $this->getVersionSuffix());
         }
 
         return parent::getCacheDir();
@@ -97,19 +97,15 @@ class AppKernel extends Kernel
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
     }
 
-    private function getVersionPrefix()
+    private function getVersionSuffix()
     {
-        if (!$this->debug) {
-            return;
-        }
-
         $version = getenv('CURRENT_VERSION_ID');
 
         // CURRENT_VERSION_ID in PHP represents major and minor version
         if (1 === substr_count($version, '.')) {
             list($major, $minor) = explode('.', $version);
 
-            return $major . '/';
+            return '-' . $major;
         }
     }
 }
