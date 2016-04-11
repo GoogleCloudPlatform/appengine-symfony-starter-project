@@ -3,7 +3,14 @@ runtime: php55
 api_version: 1
 threadsafe: true
 
+# [START clear_cache]
 handlers:
+# a script to clear our cache
+- url: /clear_cache
+  script: web/clear_cache.php
+  login: admin
+# [END clear_cache]
+
 # tell appengine where our static assets live
 - url: /bundles
   static_dir: web/bundles
@@ -16,17 +23,14 @@ handlers:
   static_files: web/favicon.ico
   upload: web/favicon.ico
 
-# a script to clear our cache
-- url: /clear_cache
-  script: web/clear_cache.php
-  login: admin
-
 # the symfony front controller
 - url: /.*
   script: web/app.php
 
+# [START env_vars]
 env_variables:
   GCS_BUCKET_NAME: "YOUR_GCS_BUCKET_NAME"
+# [END env_vars]
 
 skip_files:
   - (.*/)?Tests\/Fixtures\/(.*)
