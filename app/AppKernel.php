@@ -44,7 +44,13 @@ class AppKernel extends Kernel
         }
 
         // Enable optimistic caching for GCS.
-        $options = ['gs' => ['enable_optimsitic_cache' => true]];
+        $options = [
+            'gs' => [
+                'enable_cache' => true,
+                'enable_optimistic_cache' => true,
+                'read_cache_expiry_seconds' => 300,
+            ]
+        ];
         stream_context_set_default($options);
 
         $this->gcsBucketName = getenv('GCS_BUCKET_NAME');
