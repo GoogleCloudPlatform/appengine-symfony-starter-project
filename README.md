@@ -26,7 +26,7 @@ To run the starter app, complete the following steps:
 Deploy to your AppEngine instance:
 
 ```sh
-gcloud preview app deploy
+gcloud app deploy
 ```
 
 You can also run this locally using the app-engine
