@@ -13,7 +13,10 @@ framework:
         strict_requirements: ~
     form:            ~
     csrf_protection: ~
-    validation:      { enable_annotations: true }
+    validation:
+      enable_annotations: true
+      cache: serializer.mapping.cache.apc
+
     templating:
         engines: ['twig']
         #assets_version: SomeVersionScheme
@@ -25,6 +28,10 @@ framework:
         handler_id:  ~
     fragments:       ~
     http_method_override: true
+    serializer:
+         cache: serializer.mapping.cache.apc
+    annotations:
+         cache: serializer.mapping.cache.apc
 
 # Twig Configuration
 twig:
