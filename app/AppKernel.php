@@ -54,22 +54,34 @@ class AppKernel extends Kernel
         stream_context_set_default($options);
 
         $this->gcsBucketName = getenv('GCS_BUCKET_NAME');
+        if (!in_array('memcache', stream_get_wrappers())) {
+            stream_wrapper_register('memcache', 'AppEngine\MemcacheStreamWrapper');
+        }
     }
 
     public function getCacheDir()
     {
-        if ($this->gcsBucketName) {
+      if ($this->memcacheExists()) {
+          return sprintf('memcache://symfony/cache%s', $this->getVersionSuffix());
+       } elseif ($this->gcsBucketName) {
             return sprintf('gs://%s/symfony/cache%s', $this->gcsBucketName, $this->getVersionSuffix());
-        }
+          }
 
         return parent::getCacheDir();
     }
 
+    private function memcacheExists()
+        {
+            return class_exists('Memcached');
+        }
+
     public function getLogDir()
     {
-        if ($this->gcsBucketName) {
-            return sprintf('gs://%s/symfony/log', $this->gcsBucketName);
-        }
+      if ($this->memcacheExists()) {
+          return sprintf('memcache://symfony/log', $this->getVersionSuffix());
+       } elseif ($this->gcsBucketName) {
+            return sprintf('gs://%s/symfony/log', $this->gcsBucketName, $this->getVersionSuffix());
+          }
 
         return parent::getLogDir();
     }
@@ -89,8 +101,8 @@ class AppKernel extends Kernel
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
