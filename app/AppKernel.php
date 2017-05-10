@@ -22,56 +22,12 @@ use AppEngine\Environment;
 
 class AppKernel extends Kernel
 {
-    private $gcsBucketName;
-
-    public function __construct($environment = null, $debug = null)
+    public function __construct($env = null, $debug = false)
     {
-        // determine the environment / debug configuration based on whether or not this is running
-        // in App Engine's Dev App Server, or in production
-        if (is_null($debug)) {
-            $debug = !Environment::onAppEngine();
+        if (is_null($env)) {
+            $env = $this->onAppEngine() ? 'prod' : 'dev';
         }
-
-        if (is_null($environment)) {
-            $environment = $debug ? 'dev' : 'prod';
-        }
-
-        parent::__construct($environment, $debug);
-
-        // Symfony console requires timezone to be set manually.
-        if (!ini_get('date.timezone')) {
-          date_default_timezone_set('UTC');
-        }
-
-        // Enable optimistic caching for GCS.
-        $options = [
-            'gs' => [
-                'enable_cache' => true,
-                'enable_optimistic_cache' => true,
-                'read_cache_expiry_seconds' => 300,
-            ]
-        ];
-        stream_context_set_default($options);
-
-        $this->gcsBucketName = getenv('GCS_BUCKET_NAME');
-    }
-
-    public function getCacheDir()
-    {
-        if ($this->gcsBucketName) {
-            return sprintf('gs://%s/symfony/cache%s', $this->gcsBucketName, $this->getVersionSuffix());
-        }
-
-        return parent::getCacheDir();
-    }
-
-    public function getLogDir()
-    {
-        if ($this->gcsBucketName) {
-            return sprintf('gs://%s/symfony/log', $this->gcsBucketName);
-        }
-
-        return parent::getLogDir();
+        parent::__construct($env, $debug);
     }
 
     public function registerBundles()
@@ -81,9 +37,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppEngine\HelloWorldBundle\AppEngineHelloWorldBundle(),
         );
@@ -92,7 +45,6 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
         return $bundles;
@@ -100,18 +52,12 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+        $loader->load(__DIR__.'/config/config.yml');
     }
 
-    private function getVersionSuffix()
+    private function onAppEngine()
     {
-        $version = getenv('CURRENT_VERSION_ID');
-
-        // CURRENT_VERSION_ID in PHP represents major and minor version
-        if (1 === substr_count($version, '.')) {
-            list($major, $minor) = explode('.', $version);
-
-            return '-' . $major;
-        }
+        return isset($_SERVER['SERVER_SOFTWARE'])
+            && 0 === strpos($_SERVER['SERVER_SOFTWARE'], 'Google App Engine');
     }
 }
