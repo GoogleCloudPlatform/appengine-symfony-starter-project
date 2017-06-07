@@ -16,7 +16,7 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "3.3.0-BETA1",
+        "symfony/symfony": "3.3.0",
         "symfony/console": "^3.2",
         "doctrine/annotations": "^1.2",
         "sensio/framework-extra-bundle": "^3.0",
@@ -34,7 +34,9 @@
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap"
-        ]
+        ],
+        "deploy": "php scripts/deploy.php",
+        "server": "php scripts/server.php"
     },
     "config": {
         "bin-dir": "bin"
