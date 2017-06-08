@@ -12,6 +12,27 @@ services:
           - "@memcache"
           - { prefix: ~, expiretime: ~ }
 
+    # Use a special Memcache Adapter for App Engine because of the differences
+    # between the Memcache Proxy and an actual Memcache instance.
+    cache.system: "@cache.adapter.appengine_memcached"
+    cache.adapter.appengine_memcached:
+        class: AppEngine\Cache\Adapter\MemcachedAdapter
+        abstract: true
+        public: true
+        tags:
+            - name: cache.pool
+              provider: cache.default_memcached_provider
+              clearer: cache.default_clearer
+            - name: monolog.logger
+              channel: cache
+        arguments:
+            - ~ # Memcached connection service
+            - ~ # namespace
+            - 0 # default lifetime
+        call:
+            - method: setLogger
+              arguemnts: ['@logger']
+
     # Uses a twig subclass to avoid cache differences between PHP versions.
     # This is required in order to prebuild the cache for App Engine.
     twig:

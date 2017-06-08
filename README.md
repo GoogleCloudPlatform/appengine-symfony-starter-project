@@ -1,6 +1,11 @@
 ## [Symfony][symfony] for [Google App Engine][appengine]
 This repository contains a Symfony app for Google App Engine, based off the Symfony Standard Edition.
 
+See [How to Run Symfony Hello World on App Engine Standard Environment][symfony_community]
+for the full tutorial.
+
+[symfony_community]: https://cloud.google.com/community/tutorials/symfony-hello-world-app-engine
+
 ## Installation
 
 Install this via [composer][composer]. Follow the
@@ -24,11 +29,12 @@ gcloud auth login
 ## Run Locally
 
 ```sh
-composer run-script server
+composer run-script server --timeout=0
 ```
 
-This builds the cache for the "dev" environment and runs the `dev_appserver.py`
-script, which will be available if you've installed the
+Now browse to `http://localhost:8080` in your browser to view your running
+application. This builds the cache for the "dev" environment and runs the
+`dev_appserver.py` script, which will be available if you've installed the
 [Google App Engine Launcher][app_engine_launcher]. The command for this is
 defined in `scripts/deploy.php`.
 

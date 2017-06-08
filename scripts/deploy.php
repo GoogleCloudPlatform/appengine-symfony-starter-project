@@ -22,22 +22,35 @@
  *     composer run-script deploy --timeout=0
  *
  * This command warms the cache and then deploys the symfony application using
- * `gcloud app deploy`. It is the equivalent of the following two commands:
+ * `gcloud app deploy`. It is the equivalent of the following three commands:
  *
- *     app/console cache:warmup --no-debug --env=dev
- *     dev_appserver.py .
+ *     app/console cache:clear --no-debug --env=prod
+ *     app/console cache:warmup --no-debug --env=prod
+ *     gcloud app deploy -q
  *
  * Optional arguments can be passed in, and will be added to the
  * `gcloud app deploy` command, for instance:
  *
- *     composer run-script deploy app.yaml worker.yaml --project my-project
+ *     composer run-script deploy -- app.yaml worker.yaml --project my-project
  *
  * To run locally, run `composer run-script server`.
  */
 
+// Run the cache clear command.
+$cacheClearCmd = 'app/console cache:clear --no-debug --env=prod';
+passthru($cacheClearCmd, $returnVar);
+
+if (0 !== $returnVar) {
+    exit;
+}
+
 // Run the cache warmup command.
 $cacheWarmupCmd = 'app/console cache:warmup --no-debug --env=prod';
-passthru($cacheWarmupCmd);
+passthru($cacheWarmupCmd, $returnVar);
+
+if (0 !== $returnVar) {
+    exit;
+}
 
 // If optional args were passed into the script, add them to the gcloud command.
 $optionalArgs = array_splice($argv, 1);

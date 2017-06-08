@@ -20,6 +20,7 @@ namespace AppEngine\HelloWorldBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -29,5 +30,20 @@ class DefaultController extends Controller
     public function indexAction()
     {
         return $this->render('default/index.html.twig');
+    }
+
+    /**
+     * @Route("/storage/{filename}", name="storage")
+     */
+    public function storageAction($filename)
+    {
+        $bucketName = $this->getParameter('google_storage_bucket');
+        $fileUri = sprintf('gs://%s/%s', $bucketName, $filename);
+        if (file_exists($fileUri)) {
+            $contents = file_get_contents($fileUri);
+            return new Response($contents);
+        }
+
+        throw $this->createNotFoundException('The Cloud Storage file does not exist!');
     }
 }
