@@ -37,7 +37,7 @@ defined in `scripts/deploy.php`.
 Deploy to your App Engine instance by running the following command:
 
 ```sh
-composer run-script deploy
+composer run-script deploy --timeout=0
 ```
 
 This builds the cache for the "prod" environment and runs `gcloud app deploy`,
