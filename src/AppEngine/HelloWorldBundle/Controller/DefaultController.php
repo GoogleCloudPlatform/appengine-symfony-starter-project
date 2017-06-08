@@ -33,17 +33,24 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/storage/{filename}", name="storage")
+     * @Route("/storage", name="storage")
      */
-    public function storageAction($filename)
+    public function storageAction()
     {
         $bucketName = $this->getParameter('google_storage_bucket');
-        $fileUri = sprintf('gs://%s/%s', $bucketName, $filename);
-        if (file_exists($fileUri)) {
-            $contents = file_get_contents($fileUri);
-            return new Response($contents);
+        if ($bucketName == 'YOUR_GCS_BUCKET_NAME') {
+            throw new \InvalidArgumentException('Change YOUR_GCS_BUCKET_NAME '
+                . 'to the name of your Cloud Storage bucket in '
+                . '"app/config/parameters.yml"');
+        }
+        $fileUri = sprintf('gs://%s/helloworld.txt', $bucketName, $filename);
+        if (!file_exists($fileUri)) {
+            file_put_contents($fileUri, 'Hello World!');
         }
 
-        throw $this->createNotFoundException('The Cloud Storage file does not exist!');
+        // Use the Cloud Storage stream wrapper to read the file, a la
+        // "gs://<bucket-name>/<object-name>"
+        $this->get('logger')->info('Reading from: '. $fileUri);
+        return new Response(file_get_contents($fileUri));
     }
 }
