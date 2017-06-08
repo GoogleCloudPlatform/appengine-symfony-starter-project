@@ -11,3 +11,16 @@ services:
         arguments:
           - "@memcache"
           - { prefix: ~, expiretime: ~ }
+
+    # Uses a twig subclass to avoid cache differences between PHP versions.
+    # This is required in order to prebuild the cache for App Engine.
+    twig:
+        class: AppEngine\Twig\Environment
+        arguments:
+            - "@twig.loader"
+        call:
+            - method: addGlobal
+              arguments: [app, "@twig.app_variable"]
+            - method: addRuntimeLoader
+              arguments: ["@twig.runtime_loader"]
+        configurator: ["@twig.configurator.environment", configure]

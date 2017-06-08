@@ -10,28 +10,50 @@ composer installed.
 Once composer is installed, execute the following command to create this project:
 
 ```sh
-composer create-project google/appengine-symfony-starter-project:@dev
+composer create-project google/appengine-symfony-starter-project
 ```
 
 ## Set Up
 
-To run the starter app, complete the following steps:
+To run the starter app, be sure to authorize gcloud for your project.
 
- 1. create a [cloud storage bucket][gcs] for your App Engine project.
- 2. open `app.yaml` and change `YOUR_GCS_BUCKET_NAME` to the name of the bucket you created.
- 3. open `php.ini` and change `YOUR_GCS_BUCKET_NAME` to the name of the bucket you created.
+```
+gcloud auth login
+```
+
+## Run Locally
+
+```sh
+composer run-script server
+```
+
+This builds the cache for the "dev" environment and runs the `dev_appserver.py`
+script, which will be available if you've installed the
+[Google App Engine Launcher][app_engine_launcher]. The command for this is
+defined in `scripts/deploy.php`.
 
 ## Deployment
 
-Deploy to your AppEngine instance:
+Deploy to your App Engine instance by running the following command:
 
 ```sh
-gcloud app deploy
+composer run-script deploy
 ```
 
-You can also run this locally using the app-engine
+This builds the cache for the "prod" environment and runs `gcloud app deploy`,
+which will be available if you've installed the
+[Google Cloud SDK][gcloud]. The command for this is defined in
+`scripts/deploy.php`.
 
 > See also the [Symfony Hello World][gcp_symfony_hello] tutorial
+
+## Using Twig
+
+It should be noted this example application uses a subclass of `Twig_Environment`,
+defined in `src/Twig/Environment.php` and configured in `app/config/services.yml`.
+The reason for this subclass is to customize the `getOptionsHash` method. Without
+this, the cache cannot be warmed up outside of the PHP version being used in App
+Engine.
 
 ## Troubleshooting
 
@@ -41,10 +63,6 @@ required.
 
 1. If you see errors about missing the default Cloud Storage bucket, follow the
 [cloud integration instructions][gcs_setup] to create a default bucket for your project.
-
-1. It may be useful to **clear the cache**. You can do this by issuing a **GET** request to
-`https://YOUR_PROJECT_NAME.appspot.com/clear_cache.php`. You will be promoted for authentication,
-and then the script will delete symfony's cache from your Cloud Storage Bucket.
 
 ## Contributing
 Have a patch that will benefit this project? Awesome! Follow these steps to have it accepted.
@@ -60,6 +78,8 @@ All files in this repository are under the [MIT License](LICENSE) unless noted o
 
 [symfony]: http://symfony.com/
 [appengine]: https://cloud.google.com/appengine/
+[app_engine_launcher]: https://cloud.google.com/appengine/docs/standard/php/download
+[gcloud]: https://cloud.google.com/sdk/docs/
 [composer]: https://getcomposer.org
 [composer_install]: https://getcomposer.org/doc/00-intro.md
 [gcs]: https://cloud.google.com/appengine/docs/php/googlestorage/setup
