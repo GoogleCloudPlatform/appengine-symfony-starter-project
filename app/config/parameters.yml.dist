@@ -18,3 +18,7 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    # If you'd like to use Google Cloud Storage for files and assets, set the
+    # bucket name here.
+    google_storage_bucket: YOUR_GCS_BUCKET_NAME

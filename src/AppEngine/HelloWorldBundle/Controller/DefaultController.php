@@ -20,6 +20,7 @@ namespace AppEngine\HelloWorldBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -29,5 +30,27 @@ class DefaultController extends Controller
     public function indexAction()
     {
         return $this->render('default/index.html.twig');
+    }
+
+    /**
+     * @Route("/storage", name="storage")
+     */
+    public function storageAction()
+    {
+        $bucketName = $this->getParameter('google_storage_bucket');
+        if ($bucketName == 'YOUR_GCS_BUCKET_NAME') {
+            throw new \InvalidArgumentException('Change YOUR_GCS_BUCKET_NAME '
+                . 'to the name of your Cloud Storage bucket in '
+                . '"app/config/parameters.yml"');
+        }
+        $fileUri = sprintf('gs://%s/helloworld.txt', $bucketName, $filename);
+        if (!file_exists($fileUri)) {
+            file_put_contents($fileUri, 'Hello World!');
+        }
+
+        // Use the Cloud Storage stream wrapper to read the file, a la
+        // "gs://<bucket-name>/<object-name>"
+        $this->get('logger')->info('Reading from: '. $fileUri);
+        return new Response(file_get_contents($fileUri));
     }
 }
