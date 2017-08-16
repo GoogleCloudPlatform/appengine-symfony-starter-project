@@ -14,6 +14,12 @@ services:
 
     # Use a special Memcache Adapter for App Engine because of the differences
     # between the Memcache Proxy and an actual Memcache instance.
+    cache.default_memcached_provider:
+        class: AppEngine\Cache\Adapter\MemcachedAdapter
+        factory: ['AppEngine\Cache\Adapter\MemcachedAdapter', createConnection]
+        arguments:
+            - "memcached://localhost"
+
     cache.system: "@cache.adapter.appengine_memcached"
     cache.adapter.appengine_memcached:
         class: AppEngine\Cache\Adapter\MemcachedAdapter
