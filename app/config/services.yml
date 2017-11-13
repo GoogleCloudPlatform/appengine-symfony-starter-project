@@ -29,9 +29,9 @@ services:
             - ~ # Memcached connection service
             - ~ # namespace
             - 0 # default lifetime
-        call:
+        calls:
             - method: setLogger
-              arguemnts: ['@logger']
+              arguments: ['@logger']
 
     # Uses a twig subclass to avoid cache differences between PHP versions.
     # This is required in order to prebuild the cache for App Engine.
