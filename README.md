@@ -1,5 +1,4 @@
-**Note**: This tutorial uses PHP 5.5, which is EOL. Please use the tutorial for
-[Running Symfony on App Engine for PHP 7.2][symfony-appengine-php72] instead.
+# **Note**: This tutorial uses PHP 5.5, which is EOL. Please use the tutorial for [Running Symfony on App Engine for PHP 7.2][symfony-appengine-php72] instead.
 
 
 ## [Symfony][symfony] for [Google App Engine][appengine]
