@@ -1,3 +1,7 @@
+**Note**: This tutorial uses PHP 5.5, which is EOL. Please use the tutorial for
+[Running Symfony on App Engine for PHP 7.2][symfony-appengine-php72] instead.
+
+
 ## [Symfony][symfony] for [Google App Engine][appengine]
 This repository contains a Symfony app for Google App Engine, based off the Symfony Standard Edition.
 
@@ -93,3 +97,4 @@ All files in this repository are under the [MIT License](LICENSE) unless noted o
 [composer_reqs]: https://getcomposer.org/doc/00-intro.md#system-requirements
 [curl]: http://php.net/manual/en/book.curl.php
 [gcs_setup]: https://cloud.google.com/appengine/docs/php/googlestorage/setup
+[symfony-appengine-php72]: https://github.com/GoogleCloudPlatform/php-docs-samples/blob/master/appengine/php72/symfony-framework/README.md
