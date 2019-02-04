@@ -96,4 +96,4 @@ All files in this repository are under the [MIT License](LICENSE) unless noted o
 [composer_reqs]: https://getcomposer.org/doc/00-intro.md#system-requirements
 [curl]: http://php.net/manual/en/book.curl.php
 [gcs_setup]: https://cloud.google.com/appengine/docs/php/googlestorage/setup
-[symfony-appengine-php72]: https://github.com/GoogleCloudPlatform/php-docs-samples/blob/master/appengine/php72/symfony-framework/README.md
+[symfony-appengine-php72]: https://cloud.google.com/community/tutorials/run-symfony-on-appengine-standard
