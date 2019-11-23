@@ -31,7 +31,7 @@ services:
             - 0 # default lifetime
         call:
             - method: setLogger
-              arguemnts: ['@logger']
+              arguments: ['@logger']
 
     # Uses a twig subclass to avoid cache differences between PHP versions.
     # This is required in order to prebuild the cache for App Engine.
