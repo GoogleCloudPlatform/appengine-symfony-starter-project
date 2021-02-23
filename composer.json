@@ -16,7 +16,7 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "3.3.0",
+        "symfony/symfony": "3.4.35",
         "symfony/console": "^3.2",
         "doctrine/annotations": "^1.2",
         "sensio/framework-extra-bundle": "^3.0",
